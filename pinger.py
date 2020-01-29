@@ -2,10 +2,8 @@
 
 import subprocess
 
-def ping(host):
-    count = 3
-
-    # Ping
+# Ping command
+def ping(host,count):
     try:
         cmd_ping = subprocess.check_output(["ping",host,"-c",str(count)])
         return True
@@ -13,7 +11,7 @@ def ping(host):
         return False
 
 def main():
-    ping("")
+    ping("10.0.2.1",2)
 
 if __name__ == "__main__":
     main()
