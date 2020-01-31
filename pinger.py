@@ -14,7 +14,7 @@ def ping(host,count):
     except subprocess.CalledProcessError:
         return False
 
-def xlsx_process(file_name,sheet_index):
+def get_xlsx_rows(file_name,sheet_index):
     #Import xlrd library for read xlsx files
     try:
         import xlrd
@@ -34,6 +34,8 @@ def xlsx_process(file_name,sheet_index):
     except:
         print("Number of index [{}] not found".format(sheet_index))
         sys.exit(-1) #Exit with error code
+    
+    return sheet #Returning rows
 
 #Check whether file type supported or not
 def is_file_type_supported(file_format):
@@ -61,7 +63,13 @@ def process_arguments(args):
     else:
         sheet_index = 0
     
-    xlsx_process(file_name,sheet_index)
+    #Column of ip address
+    if args.column:
+        ip_column = int(args.column)
+    else:
+        ip_column = 0
+
+    sheet = get_xlsx_rows(file_name,sheet_index)
 
 
 def main():
@@ -69,6 +77,7 @@ def main():
     parser = ArgumentParser(description="Ping hosts from files")
     parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
     parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
+    parser.add_argument("-c","--column", default=0, help="Column of ip address [default = 0]")
     args = parser.parse_args()
 
     process_arguments(args)
