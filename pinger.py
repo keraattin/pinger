@@ -42,13 +42,8 @@ def is_file_type_supported(file_format):
     else:
         return False
 
-def main():
-    #Arguments
-    parser = ArgumentParser(description="Ping hosts from files")
-    parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
-    parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
-    args = parser.parse_args()
-
+#Processing arguments
+def process_arguments(args):
     #File Name
     if args.filename:
         file_name = str(args.filename)
@@ -58,14 +53,26 @@ def main():
             sys.exit(-1) #Exit with error code
     else:
         print("File name and sheet must be entered.")
-
+        sys.exit(-1) #Exit with error code
+        
     #Sheet Index
     if args.sheet:
         sheet_index = int(args.sheet)
     else:
         sheet_index = 0
-
+    
     xlsx_process(file_name,sheet_index)
+
+
+def main():
+    #Arguments
+    parser = ArgumentParser(description="Ping hosts from files")
+    parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
+    parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
+    args = parser.parse_args()
+
+    process_arguments(args)
+    
 
 if __name__ == "__main__":
     main()
