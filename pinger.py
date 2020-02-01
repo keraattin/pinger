@@ -3,6 +3,7 @@
 import subprocess
 import sys
 from argparse import ArgumentParser
+import re
 
 SUPPORTED_FILE_TYPES = ["xlsx","xls"]
 
@@ -45,14 +46,17 @@ def is_file_type_supported(file_format):
         return False
 
 #Check whether is sheet index valid or not
-def is_sheet_index_valid(sheet):
-    try:
-        import re
-    except:
-        subprocess.call(["pip3","install","re"])
-    
+def is_sheet_index_valid(sheet):    
     sheet_pattern = re.compile("[0-9]+(-[0-9]+)?") #Regex of sheet range
     if sheet_pattern.fullmatch(sheet):
+        return True
+    else:
+        return False
+
+#Check whether is ip column index valid or not
+def is_ip_column_index_valid(ip_column):    
+    ip_column_pattern = re.compile("[0-9]+(-[0-9]+)?") #Regex of ip column range
+    if ip_column_pattern.fullmatch(ip_column):
         return True
     else:
         return False
@@ -69,6 +73,7 @@ def define_start_and_end_sheet_index(sheet_index):
         sheet_index_list[0] = sheet_index_list[1] = int(sheet_index)
     
     return sheet_index_list
+
 
 #Processing arguments
 def process_arguments(args):
@@ -98,7 +103,10 @@ def process_arguments(args):
     
     #Column of ip address
     if args.column:
-        ip_column = int(args.column)
+        if not is_ip_column_index_valid(args.column):
+            print("You entered wrong ip column index")
+            sys.exit(-1) #Exit with error code
+        #ip_column = int(args.column)
     else:
         ip_column = 0
 
@@ -115,7 +123,7 @@ def main():
     parser = ArgumentParser(description="Ping hosts from files")
     parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
     parser.add_argument("-s","--sheet", default="0", help="Sheet index [default = 0]")
-    parser.add_argument("-c","--column", default=0, help="Column of ip address [default = 0]")
+    parser.add_argument("-c","--column", default="0", help="Column of ip address [default = 0]")
     args = parser.parse_args()
 
     process_arguments(args)
