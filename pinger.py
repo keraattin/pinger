@@ -44,6 +44,19 @@ def is_file_type_supported(file_format):
     else:
         return False
 
+#Check whether is sheet index valid or not
+def is_sheet_index_valid(sheet):
+    try:
+        import re
+    except:
+        subprocess.call(["pip3","install","re"])
+    
+    sheet_pattern = re.compile("[0-9]+(-[0-9]+)?") #Regex of sheet range
+    if sheet_pattern.fullmatch(sheet):
+        return True
+    else:
+        return False
+
 #Processing arguments
 def process_arguments(args):
     #File Name
@@ -59,7 +72,10 @@ def process_arguments(args):
         
     #Sheet Index
     if args.sheet:
-        sheet_index = int(args.sheet)
+        if not is_sheet_index_valid(args.sheet):
+            print("You entered wrong sheet index")
+            sys.exit(-1) #Exit with error code
+        #sheet_index = int(args.sheet)
     else:
         sheet_index = 0
     
@@ -69,8 +85,13 @@ def process_arguments(args):
     else:
         ip_column = 0
 
-    sheet = get_xlsx_rows(file_name,sheet_index)
+    #sheet = get_xlsx_rows(file_name,sheet_index)
+    
 
+def run(sheet,ip_column):
+    for i in range(1,sheet.nrows):
+        ip_address = sheet.cell_value(i,ip_column)
+        ping(ip_address,4)
 
 def main():
     #Arguments
