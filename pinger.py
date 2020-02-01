@@ -8,7 +8,7 @@ import re
 SUPPORTED_FILE_TYPES = ["xlsx","xls"]
 
 # Ping command
-def ping(host,count):
+def ping(host,count=3):
     try:
         cmd_ping = subprocess.check_output(["ping",host,"-c",str(count)])
         return True
@@ -61,8 +61,29 @@ def is_ip_column_index_valid(ip_column):
     else:
         return False
 
-#Processing arguments
-def process_arguments(args):
+def run(sheet,ip_column):
+    total_reachable = 0
+    total_unreachable = 0
+    for i in range(1,sheet.nrows):
+        addr = sheet.cell_value(i,ip_column)
+        if ping(addr):
+            total_reachable += 1
+            print(f"{addr:>12}{'[OK][+]':>26}")
+        else:
+            total_unreachable +=1
+            print(f"{addr:>12}{'[FAIL][+]':>26}")
+        
+    print("Total Reachable : {}".format(str(total_reachable)))
+    print("Total Unreachable : {}".format(str(total_unreachable)))
+
+def main():
+    #Arguments
+    parser = ArgumentParser(description="Ping hosts from files")
+    parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
+    parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
+    parser.add_argument("-c","--column", default=0, help="Column of ip address [default = 0]")
+    args = parser.parse_args()
+
     #File Name
     if args.filename:
         file_name = str(args.filename)
@@ -93,19 +114,10 @@ def process_arguments(args):
             sys.exit(-1) #Exit with error code
     else:
         ip_column = 0
-
+    
     sheet = get_xlsx_rows(file_name,sheet_index)
 
-
-def main():
-    #Arguments
-    parser = ArgumentParser(description="Ping hosts from files")
-    parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
-    parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
-    parser.add_argument("-c","--column", default=0, help="Column of ip address [default = 0]")
-    args = parser.parse_args()
-
-    process_arguments(args)
+    run(sheet,ip_column)
     
 
 if __name__ == "__main__":
