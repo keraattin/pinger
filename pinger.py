@@ -68,11 +68,24 @@ def define_start_and_end_sheet_index(sheet_index):
     sheet_index_list = [0,0]
     if "-" in sheet_index:
         sheet_index_list[0] = int(sheet_index.split('-')[0]) #Start Index
-        sheet_index_list[1] = int(sheet_index.split('-')[1]) #Stop Index
+        sheet_index_list[1] = int(sheet_index.split('-')[1]) #End Index
     else:
         sheet_index_list[0] = sheet_index_list[1] = int(sheet_index)
     
     return sheet_index_list
+
+#Define start and end index of ip column
+def define_start_and_end_ip_column_index(ip_column):
+    #[0] = Start Index
+    #[1] = End Index
+    ip_column_index_list = [0,0]
+    if "-" in ip_column:
+        ip_column_index_list[0] = int(ip_column.split('-')[0]) #Start Index
+        ip_column_index_list[1] = int(ip_column.split('-')[1]) #End Index
+    else:
+        ip_column_index_list[0] = ip_column_index_list[1] = int(ip_column)
+    
+    return ip_column_index_list
 
 
 #Processing arguments
@@ -106,9 +119,13 @@ def process_arguments(args):
         if not is_ip_column_index_valid(args.column):
             print("You entered wrong ip column index")
             sys.exit(-1) #Exit with error code
-        #ip_column = int(args.column)
+        ip_column_index_list = define_start_and_end_ip_column_index(args.column)
+        print("Start Ip Column : {}".format(str(ip_column_index_list[0])))
+        print("End Ip Column : {}".format(str(ip_column_index_list[1])))
     else:
-        ip_column = 0
+        ip_column_index_list = define_start_and_end_ip_column_index(args.column)
+        print("Start : {}".format(str(ip_column_index_list[0])))
+        print("End : {}".format(str(ip_column_index_list[1])))
 
     #sheet = get_xlsx_rows(file_name,sheet_index)
     
