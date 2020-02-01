@@ -3,6 +3,7 @@
 import subprocess
 import sys
 from argparse import ArgumentParser
+import re
 
 SUPPORTED_FILE_TYPES = ["xlsx","xls"]
 
@@ -44,10 +45,18 @@ def is_file_type_supported(file_format):
     else:
         return False
 
-#Check whether is sheet index valid or not
+#Check whether sheet index valid or not
 def is_sheet_index_valid(sheet):    
-    sheet_pattern = re.compile("[0-9]+") #Regex of sheet range
+    sheet_pattern = re.compile("[0-9]+") #Regex of sheet column
     if sheet_pattern.fullmatch(sheet):
+        return True
+    else:
+        return False
+
+#Check whether ip column index valid or not
+def is_ip_column_index_valid(ip_column):
+    ip_column_pattern = re.compile("[0-9]+") #Regex of ip address column
+    if ip_column_pattern.fullmatch(ip_column):
         return True
     else:
         return False
@@ -77,7 +86,11 @@ def process_arguments(args):
     
     #Column of ip address
     if args.column:
-        ip_column = int(args.column)
+        if is_ip_column_index_valid(args.column):
+            ip_column = int(args.column)
+        else:
+            print("You entered wrong ip column index")
+            sys.exit(-1) #Exit with error code
     else:
         ip_column = 0
 
