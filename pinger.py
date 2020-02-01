@@ -44,6 +44,14 @@ def is_file_type_supported(file_format):
     else:
         return False
 
+#Check whether is sheet index valid or not
+def is_sheet_index_valid(sheet):    
+    sheet_pattern = re.compile("[0-9]+") #Regex of sheet range
+    if sheet_pattern.fullmatch(sheet):
+        return True
+    else:
+        return False
+
 #Processing arguments
 def process_arguments(args):
     #File Name
@@ -59,7 +67,11 @@ def process_arguments(args):
         
     #Sheet Index
     if args.sheet:
-        sheet_index = int(args.sheet)
+        if is_sheet_index_valid(args.sheet):
+            sheet_index = int(args.sheet)
+        else:
+            print("You entered wrong sheet index")
+            sys.exit(-1) #Exit with error code
     else:
         sheet_index = 0
     
