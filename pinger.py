@@ -57,6 +57,19 @@ def is_sheet_index_valid(sheet):
     else:
         return False
 
+#Define start and end index of sheet
+def define_start_and_end_sheet_index(sheet_index):
+    #[0] = Start Index
+    #[1] = End Index
+    sheet_index_list = [0,0]
+    if "-" in sheet_index:
+        sheet_index_list[0] = int(sheet_index.split('-')[0]) #Start Index
+        sheet_index_list[1] = int(sheet_index.split('-')[1]) #Stop Index
+    else:
+        sheet_index_list[0] = sheet_index_list[1] = int(sheet_index)
+    
+    return sheet_index_list
+
 #Processing arguments
 def process_arguments(args):
     #File Name
@@ -75,9 +88,13 @@ def process_arguments(args):
         if not is_sheet_index_valid(args.sheet):
             print("You entered wrong sheet index")
             sys.exit(-1) #Exit with error code
-        #sheet_index = int(args.sheet)
+        sheet_index_list = define_start_and_end_sheet_index(args.sheet)
+        print("Start : {}".format(str(sheet_index_list[0])))
+        print("End : {}".format(str(sheet_index_list[1])))
     else:
-        sheet_index = 0
+        sheet_index_list = define_start_and_end_sheet_index(args.sheet)
+        print("Start : {}".format(str(sheet_index_list[0])))
+        print("End : {}".format(str(sheet_index_list[1])))
     
     #Column of ip address
     if args.column:
@@ -97,7 +114,7 @@ def main():
     #Arguments
     parser = ArgumentParser(description="Ping hosts from files")
     parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
-    parser.add_argument("-s","--sheet", default=0, help="Sheet index [default = 0]")
+    parser.add_argument("-s","--sheet", default="0", help="Sheet index [default = 0]")
     parser.add_argument("-c","--column", default=0, help="Column of ip address [default = 0]")
     args = parser.parse_args()
 
