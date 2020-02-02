@@ -44,7 +44,7 @@ def is_ping_count_valid(ping_count):
 def main():
     #Arguments
     parser = ArgumentParser(description=banner.show_banner())
-    parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
+    parser.add_argument("-f","--filename", type=str, help="Name of file", required=True)
     parser.add_argument("-s","--sheet", type=int, default=0, help="Sheet index [default = 0]")
     parser.add_argument("-c","--column", type=int, default=0, help="Column of ip address [default = 0]")
     parser.add_argument("-pc","--pingcount", type=int, default=3, help="How many times sending ping request [default = 3]")
