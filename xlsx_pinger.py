@@ -2,6 +2,7 @@
 
 import subprocess
 import ping
+import sys
 
 def get_xlsx_rows(file_name,sheet_index):
     #Import xlrd library for read xlsx files
