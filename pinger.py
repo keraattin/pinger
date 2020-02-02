@@ -4,8 +4,9 @@ import sys
 from argparse import ArgumentParser
 import re
 import xlsx_pinger
+import csv_pinger
 
-SUPPORTED_FILE_TYPES = ["xlsx","xls"]
+SUPPORTED_FILE_TYPES = ["xlsx","xls","csv"]
 
 #Check whether file type supported or not
 def is_file_type_supported(file_format):
@@ -93,8 +94,9 @@ def main():
     if file_format == "xlsx" or file_format == "xls":
         sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
         xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
-        
-    
+    elif file_format == "csv":
+        csv_document = csv_pinger.get_csv_rows(file_name)
+        csv_pinger.run(csv_document,ip_column,ping_count)
 
 if __name__ == "__main__":
     main()
