@@ -3,6 +3,7 @@
 import sys
 from argparse import ArgumentParser
 import re
+import banner
 import xlsx_pinger
 import csv_pinger
 
@@ -39,9 +40,10 @@ def is_ping_count_valid(ping_count):
     else:
         return False
 
+
 def main():
     #Arguments
-    parser = ArgumentParser(description="Ping hosts from files")
+    parser = ArgumentParser(description=banner.show_banner())
     parser.add_argument("-f","--filename", type=str, help="Column of ip addresses", required=True)
     parser.add_argument("-s","--sheet", type=int, default=0, help="Sheet index [default = 0]")
     parser.add_argument("-c","--column", type=int, default=0, help="Column of ip address [default = 0]")
@@ -89,7 +91,6 @@ def main():
             sys.exit(-1) #Exit with error code
     else:
         ping_count = 3
-
 
     if file_format == "xlsx" or file_format == "xls":
         sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
