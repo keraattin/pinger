@@ -27,3 +27,10 @@ or
 | ------------- |
 | python3 |
 | xlrd | 
+
+### Supported File Types
+| Supported File Types |
+| ------------- |
+| xlsx |
+| xls | 
+| csv | 
