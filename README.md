@@ -20,4 +20,4 @@ or
 | -c COLUMN | --column COLUMN | Column of ip address | [default = 0] |
 | -pc PINGCOUNT | --pingcount PINGCOUNT | How many times sending ping request | [default = 3] |
 
-![output](pictures/output.png)
+![output](pictures/help.png)
