@@ -1,6 +1,11 @@
 # Pinger
 Pinger is a tool to ping the ip addresses in files such as excel or csv to show if the hosts are turned on.
 
+### How to Get
+```
+git clone https://github.com/keraattin/pinger.git
+```
+
 ### How to Run
 ```
 python3 pinger.py -f [file_name] 
