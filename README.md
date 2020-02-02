@@ -21,3 +21,9 @@ or
 | -pc PINGCOUNT | --pingcount PINGCOUNT | How many times sending ping request | [default = 3] |
 
 ![output](pictures/help.png)
+
+### Requirements
+| Requirements |
+| ------------- |
+| python3 |
+| xlrd | 
