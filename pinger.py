@@ -89,9 +89,11 @@ def main():
     else:
         ping_count = 3
 
-    sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
 
-    xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
+    if file_format == "xlsx" or file_format == "xls":
+        sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
+        xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
+        
     
 
 if __name__ == "__main__":
