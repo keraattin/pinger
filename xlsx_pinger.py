@@ -26,12 +26,12 @@ def get_xlsx_rows(file_name,sheet_index):
     
     return sheet #Returning rows
 
-def run(sheet,ip_column):
+def run(sheet,ip_column,ping_count):
     total_reachable = 0
     total_unreachable = 0
     for i in range(1,sheet.nrows):
         addr = sheet.cell_value(i,ip_column)
-        if ping.ping(addr):
+        if ping.ping(addr,ping_count):
             total_reachable += 1
             print(f"{addr:<20}{'[OK][+]':>12}")
         else:

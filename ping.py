@@ -3,7 +3,7 @@
 import subprocess
 
 # Ping command
-def ping(host,count=3):
+def ping(host,count):
     try:
         cmd_ping = subprocess.check_output(["ping",host,"-c",str(count)])
         return True
