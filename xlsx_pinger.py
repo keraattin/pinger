@@ -3,6 +3,7 @@
 import subprocess
 import ping
 import sys
+import colors
 
 def get_xlsx_rows(file_name,sheet_index):
     #Import xlrd library for read xlsx files
@@ -34,10 +35,10 @@ def run(sheet,ip_column,ping_count):
         addr = sheet.cell_value(i,ip_column)
         if ping.ping(addr,ping_count):
             total_reachable += 1
-            print(f"{addr:<20}{'[+][OK]':<12}")
+            print(f"{colors.LIGHT_GREEN}{addr:<20}{'[+][OK]':<12}{colors.NC}")
         else:
             total_unreachable +=1
-            print(f"{addr:<20}{'[-][FAIL]':<12}")
+            print(f"{colors.LIGHT_RED}{addr:<20}{'[-][FAIL]':<12}{colors.NC}")
         
     print("Total Reachable : {}".format(str(total_reachable)))
     print("Total Unreachable : {}".format(str(total_unreachable)))
