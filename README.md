@@ -24,6 +24,7 @@ or
 | -s SHEET | --sheet SHEET |  Sheet index | [default = 0] | 
 | -c COLUMN | --column COLUMN | Column of ip address | [default = 0] |
 | -pc PINGCOUNT | --pingcount PINGCOUNT | How many times sending ping request | [default = 3] |
+| -a | --autorun | Detects ip adresses from whole document and ping them |  |
 
 ![output](pictures/help.png)
 
