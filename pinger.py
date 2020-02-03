@@ -48,6 +48,7 @@ def main():
     parser.add_argument("-s","--sheet", type=int, default=0, help="Sheet index [default = 0]")
     parser.add_argument("-c","--column", type=int, default=0, help="Column of ip address [default = 0]")
     parser.add_argument("-pc","--pingcount", type=int, default=3, help="How many times sending ping request [default = 3]")
+    parser.add_argument("-a","--autorun", help="Autorun, detects ip adresses from whole document and ping them" , action="store_true")
     args = parser.parse_args()
 
     #File Name
@@ -93,8 +94,12 @@ def main():
         ping_count = 3
 
     if file_format == "xlsx" or file_format == "xls":
-        sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
-        xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
+        if args.autorun:
+            wb = xlsx_pinger.get_all_sheets(file_name) #Get document
+            xlsx_pinger.autorun(wb,ping_count) #Autorun pinger
+        else:
+            sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
+            xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
     elif file_format == "csv":
         csv_document = csv_pinger.get_csv_rows(file_name)
         csv_pinger.run(csv_document,ip_column,ping_count)
