@@ -101,8 +101,12 @@ def main():
             sheet = xlsx_pinger.get_xlsx_rows(file_name,sheet_index) #Get sheet
             xlsx_pinger.run(sheet,ip_column,ping_count) #Run pinger
     elif file_format == "csv":
-        csv_document = csv_pinger.get_csv_rows(file_name)
-        csv_pinger.run(csv_document,ip_column,ping_count)
+        if args.autorun:
+            csv_document = csv_pinger.get_csv_document(file_name)
+            csv_pinger.autorun(csv_document,ping_count)
+        else:
+            csv_document = csv_pinger.get_csv_document(file_name)
+            csv_pinger.run(csv_document,ip_column,ping_count)
 
 if __name__ == "__main__":
     main()
