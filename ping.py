@@ -2,6 +2,13 @@
 
 import subprocess
 
+#Import Scapy library
+try:
+    from scapy.all import *
+except:
+    #If library not exist install library
+    subprocess.call(["pip3","install","scapy"])
+
 # Ping command
 def ping(host,count):
     try:
@@ -9,4 +16,3 @@ def ping(host,count):
         return True
     except subprocess.CalledProcessError:
         return False
-
