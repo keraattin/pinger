@@ -44,8 +44,13 @@ def run(csv_document,ip_column,ping_count):
             total_reachable += 1
             print(f"{colors.LIGHT_GREEN}{addr:<20}{'[+][OK]':<12}{colors.NC}")
         else:
-            total_unreachable +=1
-            print(f"{colors.LIGHT_RED}{addr:<20}{'[-][FAIL]':<12}{colors.NC}")
+            tcp_port = ping.check_tcp_ports(addr) #Checking Tcp ports
+            if tcp_port:
+                total_reachable += 1
+                print(f"{colors.LIGHT_GREEN}{addr:<20}{'[+][OK][Port:{}]'.format(str(tcp_port)):<12}{colors.NC}")
+            else:
+                total_unreachable +=1
+                print(f"{colors.LIGHT_RED}{addr:<20}{'[-][FAIL]':<12}{colors.NC}")
         
     print("Total Reachable : {}".format(str(total_reachable)))
     print("Total Unreachable : {}".format(str(total_unreachable)))
@@ -62,10 +67,15 @@ def autorun(csv_document,ping_count):
             if is_cell_value_is_ip_v4_address(cell): #Checking whether cell is an ip v4 address or not
                 if ping.ping(cell,ping_count):
                     total_reachable += 1
-                    print(f"{colors.LIGHT_GREEN}{cell:<20}{'[+][OK]':<12}{colors.NC}")
+                    print(f"{colors.LIGHT_GREEN}{cell:<20}{'[+][OK]':<12}{colors.NC}")        
                 else:
-                    total_unreachable +=1
-                    print(f"{colors.LIGHT_RED}{cell:<20}{'[-][FAIL]':<12}{colors.NC}")
+                    tcp_port = ping.check_tcp_ports(cell) #Checking Tcp ports
+                    if tcp_port:
+                        total_reachable += 1
+                        print(f"{colors.LIGHT_GREEN}{cell:<20}{'[+][OK][Port:{}]'.format(str(tcp_port)):<12}{colors.NC}")
+                    else:
+                        total_unreachable +=1
+                        print(f"{colors.LIGHT_RED}{cell:<20}{'[-][FAIL]':<12}{colors.NC}")
     
     print("Total Reachable : {}".format(str(total_reachable)))
     print("Total Unreachable : {}".format(str(total_unreachable)))
