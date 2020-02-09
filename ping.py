@@ -14,10 +14,12 @@ TOP_TCP_PORTS = [22,53,80,443,3306,8080]
 
 # Ping command
 def ping(host,count):
-    try:
-        cmd_ping = subprocess.check_output(["ping",host,"-c",str(count)])
+    time_out = 1
+    icmp_pkg = IP(dst=host)/ICMP()
+    response = sr1(icmp_pkg,verbose=False,timeout=time_out)
+    if not (response is None):
         return True
-    except subprocess.CalledProcessError:
+    else:
         return False
 
 #Check whether tcp ports are open or not with syn, syn+ack
