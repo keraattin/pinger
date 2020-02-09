@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
+import time
 
 #Import Scapy library
 try:
@@ -18,3 +19,20 @@ def ping(host,count):
         return True
     except subprocess.CalledProcessError:
         return False
+
+#Check whether tcp ports are open or not with syn, syn+ack
+def check_tcp_ports(host):
+    src_port = RandNum(1024,65535) #Random Source Port
+    seq_num = RandNum(150000,160000) #Random Sequence Number
+    time_out = 1
+    
+    for dst_port in TOP_TCP_PORTS:
+        try:
+            syn_pkg = IP(dst=host)/TCP(sport=src_port,dport=dst_port,seq=seq_num,flags="S")
+            syn_ack = sr1(syn_pkg,verbose=False,timeout=time_out)
+            pkgflags = syn_ack.getlayer(TCP).flags
+            if pkgflags == "SA": #SynAck
+                return dst_port         
+        except:
+            pass
+    return False #Not found any open tcp port
